@@ -1,0 +1,12 @@
+﻿
+<button class="btn btn-primary">
+    <span class="oi oi-plus"></span>
+    New Note
+</button>
+
+<div class="row">
+    @foreach (var note in Notes)
+    {
+       <NoteListItem Note="note" />
+    }
+</div>

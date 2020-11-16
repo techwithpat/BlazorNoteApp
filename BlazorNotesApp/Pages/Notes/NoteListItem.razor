@@ -1,0 +1,19 @@
+﻿<div class="card m-3" style="width:18rem;">
+    <div class="card-header">
+        <button class="btn btn-primary">
+            <span class="oi oi-pencil"></span>
+        </button>
+        <button class="btn btn-danger">
+            <span class="oi oi-trash"></span>
+        </button>
+    </div>
+    <div class="card-body">
+        <h5>@Note.Title</h5>
+        <p>@Note.Content</p>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public NoteModel Note { get; set; }
+}
