@@ -1,19 +1,55 @@
 ﻿<div class="card m-3" style="width:18rem;">
     <div class="card-header">
-        <button class="btn btn-primary">
+        <button class="btn btn-primary" @onclick="(() => Note.ReadOnly = false)">
             <span class="oi oi-pencil"></span>
         </button>
-        <button class="btn btn-danger">
+        <button class="btn btn-danger" @onclick="DeleteNote">
             <span class="oi oi-trash"></span>
         </button>
     </div>
     <div class="card-body">
-        <h5>@Note.Title</h5>
-        <p>@Note.Content</p>
+        <EditForm Model="@Note" OnValidSubmit="@HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+            <div class="form-group">
+                <InputText id="title" @bind-Value="Note.Title"
+                           class="form-control h5"
+                           readonly="@Note.ReadOnly" />
+            </div>
+            <div class="form-group">
+                <InputTextArea id="content" @bind-Value="Note.Content"
+                               class="form-control"
+                               readonly="@Note.ReadOnly" />
+            </div>
+            @if (!Note.ReadOnly)
+            {
+                <button class="btn btn-primary" type="submit">
+                    Save
+                </button>
+            }
+        </EditForm>
     </div>
 </div>
 
 @code {
+
     [Parameter]
     public NoteModel Note { get; set; }
+
+    [Parameter]
+    public EventCallback<NoteModel> OnAddNewNote { get; set; }
+
+    [Parameter]
+    public EventCallback<NoteModel> OnDeleteNote { get; set; }
+
+    private async Task HandleValidSubmit()
+    {
+        await OnAddNewNote.InvokeAsync(Note);
+    }
+
+    private async Task DeleteNote()
+    {
+        await OnDeleteNote.InvokeAsync(Note);
+    }
+
 }

@@ -48,3 +48,17 @@ a, .btn-link {
         right: 0.75rem;
         top: 0.5rem;
     }
+
+  input, textarea{
+      width:100%;
+  }
+
+.form-control[readonly]{
+    outline:none;
+    border-style:none;
+    background-color:#fff;
+}
+
+textarea{
+    resize:none;
+}

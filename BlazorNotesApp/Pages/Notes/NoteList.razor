@@ -1,5 +1,5 @@
 ﻿
-<button class="btn btn-primary">
+<button class="btn btn-primary" @onclick="AddNote">
     <span class="oi oi-plus"></span>
     New Note
 </button>
@@ -7,11 +7,13 @@
 <div class="row">
     @foreach (var note in Notes)
     {
-        <NoteListItem Note="note" />
+        <NoteListItem Note="note" OnAddNewNote="SaveNote" OnDeleteNote="DeleteNote"  />
     }
 </div>
 
 @code{
+
+    private bool isEditing;
     public IList<NoteModel> Notes { get; set; }
 
     protected override void OnInitialized()
@@ -23,5 +25,34 @@
             new NoteModel{Title = "Third note", Content = "Third content"},
             new NoteModel{Title = "Fourth note", Content = "Fourth content"}
         };
+    }
+
+    private void AddNote()
+    {
+        if(!isEditing)
+        {
+            Notes.Insert(0, new NoteModel() { ReadOnly = false });
+            isEditing = true;
+        }
+    }
+
+    private void SaveNote(NoteModel noteModel)
+    {
+        noteModel.ReadOnly = true;
+        isEditing = false;
+
+        //TODO : Persist the note
+    }
+
+    private void DeleteNote(NoteModel noteModel)
+    {
+        try
+        {
+            Notes.Remove(noteModel);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }
 }
