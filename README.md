@@ -6,4 +6,7 @@ Source code for Blazor WebAssembly Tutorial on YouTube.
 <br/>
 [Blazor WebAssembly tutorial #2 - Components](https://youtu.be/coCm1ME-1A8)
 <br/>
+[Blazor WebAssembly tutorial #3 - Events handling](https://youtu.be/mzaE2IPHseg)
+<br/>
 [Blazor WebAssembly tutorial #4 - Dependency injection](https://youtu.be/mzaE2IPHseg)
+
