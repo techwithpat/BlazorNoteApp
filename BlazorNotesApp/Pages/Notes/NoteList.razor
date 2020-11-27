@@ -1,13 +1,24 @@
-﻿
+﻿@inject IJSRuntime JSRuntime
+@inject INoteRepository NoteRepository
+
 <button class="btn btn-primary" @onclick="AddNote">
     <span class="oi oi-plus"></span>
     New Note
 </button>
 
 <div class="row">
-    @foreach (var note in Notes)
+    @if (Notes.Count == 0)
     {
-        <NoteListItem Note="note" OnAddNewNote="SaveNote" OnDeleteNote="DeleteNote"  />
+        <div class="m-3">
+            <h5>Nothing to display</h5>
+        </div>
+    }
+    else
+    {
+        @foreach (var note in Notes)
+        {
+            <NoteListItem Note="note" OnAddNewNote="SaveNote" OnDeleteNote="DeleteNote" />
+        }
     }
 </div>
 
@@ -18,13 +29,9 @@
 
     protected override void OnInitialized()
     {
-        Notes = new List<NoteModel>()
-        {
-            new NoteModel{Title = "First note", Content = "First content"},
-            new NoteModel{Title = "Second note", Content = "Second content"},
-            new NoteModel{Title = "Third note", Content = "Third content"},
-            new NoteModel{Title = "Fourth note", Content = "Fourth content"}
-        };
+        Notes = NoteRepository.GetAll()
+            .OrderByDescending(n => n.Created)
+            .ToList();
     }
 
     private void AddNote()
@@ -32,6 +39,7 @@
         if(!isEditing)
         {
             Notes.Insert(0, new NoteModel() { ReadOnly = false });
+
             isEditing = true;
         }
     }
@@ -39,16 +47,23 @@
     private void SaveNote(NoteModel noteModel)
     {
         noteModel.ReadOnly = true;
-        isEditing = false;
 
-        //TODO : Persist the note
+        NoteRepository.Save(noteModel);
+
+        isEditing = false;
     }
 
-    private void DeleteNote(NoteModel noteModel)
+    private async void DeleteNote(NoteModel noteModel)
     {
+        if (!await JSRuntime.InvokeAsync<bool>("confirm", $"The note {noteModel.Title} is going to be deleted, are you sure ?"))
+            return;
+
         try
         {
+            NoteRepository.Delete(noteModel);
             Notes.Remove(noteModel);
+
+            StateHasChanged();
         }
         catch (Exception ex)
         {
