@@ -9,4 +9,6 @@ Source code for Blazor WebAssembly Tutorial on YouTube.
 [Blazor WebAssembly tutorial #3 - Events handling](https://youtu.be/mzaE2IPHseg)
 <br/>
 [Blazor WebAssembly tutorial #4 - Dependency injection](https://youtu.be/mzaE2IPHseg)
+<br/>
+[Blazor WebAssembly tutorial #5 - Deploy to Microsoft Azure](https://youtu.be/utJAijhfzwI)
 
